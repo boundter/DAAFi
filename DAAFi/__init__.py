@@ -4,14 +4,13 @@ from flask import Flask
 
 def create_app(test_config=None):
     """
-    Creates a flask app with a default conifugration. This configuration will
-    be overwritten by a config.py file and this should be done for proper
-    security. The config files should be located in an instance folder in the
-    app directory.
+    Create a flask app with a default configuration.
 
-    :param string test_config: The name of the config file for tests in the 
-                               instance folder
-
+    This configuration will be overwritten by a config.py file and this should
+    be done for proper security. The config files should be located in an
+    instance folder in the app directory.
+    :param string test_config: The name of the config file for tests in the
+                                   instance folder
     :returns: The flask app
     """
     # create the app and an instance folder in the app directory
@@ -39,5 +38,8 @@ def create_app(test_config=None):
     @app.route("/hello")
     def hello():
         return "Hello World!"
+
+    from . import db
+    db.init_app(app)
 
     return app

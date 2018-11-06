@@ -5,7 +5,10 @@ This module contains functions to interact with a database in a flask-App.
 They offer the ability to connect, initialize and close a database.
 """
 import sqlite3
+
+import click
 from flask import current_app, g
+from flask.cli import with_appcontext
 
 
 def get_db():
@@ -38,3 +41,19 @@ def init_db():
     # should the databse already exist
     with current_app.open_resource("schema.sql") as f:
         db.executescript(f.read().decode("utf8"))
+
+
+# cli function to create a new database
+@click.command("init_db")
+@with_appcontext
+def init_db_command():
+    """Clear the current database and create a new one."""
+    init_db()
+    click.echo("Initialized the database")
+
+
+def init_app(app):
+    """Add the functions to interact with the databse to flask factory."""
+    # close the databse when quitting the app
+    app.teardown_appcontext(close_db)
+    app.cli.add_command(init_db_command)
