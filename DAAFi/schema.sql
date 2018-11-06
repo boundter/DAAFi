@@ -1,0 +1,28 @@
+DROP TABLE IF EXISTS master_data;
+DROP TABLE IF EXISTS method;
+DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS transaction;
+
+CREATE TABLE master_data (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name text UNIQUE NOT NULL
+);
+
+CREATE TABLE method (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name text UNIQUE NOT NULL
+);
+
+CREATE TABLE category (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name text UNIQUE NOT NULL
+);
+
+CREATE TABLE transaction (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  date REAL NOT NULL,
+  amount DECIMAL(10,2),
+  FOREIGN KEY (peer_id) REFERENCES master_data (id),
+  FOREIGN KEY (method_id) REFERENCES method (id),
+  FOREIGN KEY (category_id) REFERENCES category (id)
+);
