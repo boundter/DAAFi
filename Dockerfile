@@ -17,4 +17,7 @@ EXPOSE 5000
 RUN cd /app
 ENV FLASK_APP DAAFi
 
+# add app directory to pythonpath for easier testing
+ENV PYTHONPATH /app
+
 CMD ["flask", "run", "--host", "0.0.0.0"]
