@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS master_data;
 DROP TABLE IF EXISTS method;
 DROP TABLE IF EXISTS category;
-DROP TABLE IF EXISTS transaction;
+DROP TABLE IF EXISTS deal;
 
 CREATE TABLE master_data (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,10 +18,13 @@ CREATE TABLE category (
   name text UNIQUE NOT NULL
 );
 
-CREATE TABLE transaction (
+CREATE TABLE deal (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   date REAL NOT NULL,
   amount DECIMAL(10,2),
+  peer_id INTEGER,
+  method_id INTEGER,
+  category_id INTEGER,
   FOREIGN KEY (peer_id) REFERENCES master_data (id),
   FOREIGN KEY (method_id) REFERENCES method (id),
   FOREIGN KEY (category_id) REFERENCES category (id)
