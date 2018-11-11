@@ -48,3 +48,25 @@ def add_method():
 
         flash(error)
     return render_template("add_method.html")
+
+
+@bp.route("/category", methods=("GET", "POST"))
+def add_category():
+    if request.method == "POST":
+        category_name = request.form["category_name"]
+        db = get_db()
+        error = None
+
+        # check if an entry of the same name already exists
+        if db.execute("SELECT id from category WHERE name = ?",
+                      (category_name, )).fetchone() is not None:
+            error = "The name {} is already registered.".format(category_name)
+
+        if error is None:
+            db.execute("INSERT INTO category (name) VALUES (?)",
+                       (category_name, ))
+            db.commit()
+            return redirect(url_for("hello"))
+
+        flash(error)
+    return render_template("add_category.html")
