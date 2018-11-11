@@ -5,7 +5,7 @@ from DAAFi.db import get_db
 bp = Blueprint("add_data", __name__, url_prefix="/add_data")
 
 
-@bp.route("/master_data", methods=("GET", "POST"))
+@bp.route("/associates", methods=("GET", "POST"))
 def add_associates():
     if request.method == "POST":
         associates_name = request.form["associates_name"]
