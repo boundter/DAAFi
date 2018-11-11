@@ -18,7 +18,7 @@ def create_app(test_config=None):
     # set a secret key for development and the location of the database
     app.config.from_mapping(
             SECRET_KEY="dev",
-            DATABASE=os.path.join(app.instance_path, "DAAFI.sqlite"),
+            DATABASE=os.path.join(app.instance_path, "DAAFi.sqlite"),
     )
 
     if test_config is None:
