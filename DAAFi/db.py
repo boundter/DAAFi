@@ -57,3 +57,14 @@ def init_app(app):
     # close the databse when quitting the app
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
+
+def check_table_name(table):
+    """Check if the table name exists in the database."""
+    db = get_db()
+    tables = db.execute("SELECT name FROM sqlite_master WHERE type='table'"
+                        ).fetchall()
+    available_tables = []
+    for row in tables:
+        available_tables.append(row[0])
+    return table in available_tables

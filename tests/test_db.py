@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """This module contains test for the database connections."""
+from DAAFi.db import check_table_name
 
 
 def test_init_db_command(runner, monkeypatch):
@@ -16,3 +17,13 @@ def test_init_db_command(runner, monkeypatch):
     # Check for successful initialization
     assert "Initialized" in result.output
     assert Recorder.called
+
+
+def test_check_table_name(app):
+    with app.app_context():
+        true_names = ["associates", "method", "category", "transfer"]
+        false_names = ["foo", "bar", "baz"]
+        for name in true_names:
+            assert check_table_name(name)
+        for name in false_names:
+            assert not check_table_name(name)
