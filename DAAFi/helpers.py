@@ -2,7 +2,7 @@
 """Helper functions to manipulate data."""
 
 
-def ListToDict(two_dim_list):
+def list_to_dict(two_dim_list):
     """Convert a 2d-list into a dictionary.
 
     The key of the dictionary will be the first element of every entry, and the
