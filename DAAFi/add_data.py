@@ -39,7 +39,7 @@ def add_entry_name_base(table, formfield, template):
             db.execute("INSERT INTO " + table + " (name) VALUES (?)",
                        (name, ))
             db.commit()
-            return redirect(url_for("hello"))
+            return redirect(url_for("index"))
 
         flash(error)
     return render_template(template)
