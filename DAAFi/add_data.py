@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """Create interface to add data to database."""
+import datetime
 from flask import Blueprint, flash, render_template, request, redirect,\
     url_for
 from DAAFi.db import get_db
+from DAAFi.queries import get_names, write_transaction
 
 bp = Blueprint("add_data", __name__, url_prefix="/add_data")
 
@@ -39,7 +41,7 @@ def add_entry_name_base(table, formfield, template):
             db.execute("INSERT INTO " + table + " (name) VALUES (?)",
                        (name, ))
             db.commit()
-            return redirect(url_for("index"))
+            return redirect(url_for("Overview.index"))
 
         flash(error)
     return render_template(template)
@@ -63,3 +65,44 @@ def add_category():
     """Create interface to add the name of categories."""
     return add_entry_name_base("category", "category_name",
                                "add_category.html")
+
+
+@bp.route("/transaction", methods=("GET", "POST"))
+def add_transaction():
+    """Create interface to add transaction entries."""
+    associates = get_names("associates")
+    category = get_names("category")
+    method = get_names("method")
+    today = datetime.datetime.strftime(datetime.date.today(), "%d.%m.%Y")
+    if request.method == "POST":
+        # these should be correct, since the ids come directly from the db and
+        # the values from dropdown
+        associate_id = request.form["associates"]
+        method_id = request.form["method"]
+        category_id = request.form["category"]
+
+        # make sure the amount is valid
+        amount = request.form["amount"]
+        error_amount = None
+        try:
+            float(amount)
+        except ValueError:
+            error_amount = "{} is not a valid amount.".format(amount)
+            flash(error_amount)
+
+        # make sure the date is valid
+        date = request.form["date"]
+        error_date = None
+        try:
+            date = datetime.datetime.strptime(date, "%d.%m.%Y")
+        except ValueError:
+            error_date = "{} is not a valid date.".format(date)
+            flash(error_date)
+
+        if (error_amount is None and error_date is None):
+            write_transaction(date, amount, associate_id, method_id,
+                              category_id)
+            return redirect(url_for("Overview.index"))
+
+    return render_template("add_transaction.html", associates=associates,
+                           category=category, method=method, date=today)

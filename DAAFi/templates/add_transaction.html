@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Add Transaction{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="associates">Associate</label>
+    <select name="associates" id="associates" required>
+      {% for id, name in associates.items() %}
+        <option value={{ id }}>{{ name }}</option>
+      {% endfor %}
+    </select>
+    <label for="category">Category</label>
+    <select name="category" id="category" required>
+      {% for id, name in category.items() %}
+      <option value={{ id }}>{{ name }}</option>
+      {% endfor %}
+    </select>
+    <label for="method">Method</label>
+    <select name="method" id="method" required>
+      {% for id, name in method.items() %}
+      <option value={{ id }}>{{ name }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <label for="amount">Amount in Euro</label>
+    <input name="amount" id="amount" required></input>
+    <br>
+    <label for="date">Date in the form day.month.year (23.12.2013)</label>
+    <input name="date" id="date" value={{ date }} required></input>
+    <br>
+    <input type="submit" value="Add">
+  </form>
+{% endblock %}
