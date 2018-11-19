@@ -12,11 +12,12 @@ from flask.cli import with_appcontext
 
 
 def get_db():
-    """
-    Get the database.
+    """Get the database.
 
     If no databse is available it will be connected.
-    :returns: The database
+    Returns:
+        The connection to the database
+
     """
     if "db" not in g:
         g.db = sqlite3.connect(current_app.config["DATABASE"],
