@@ -3,13 +3,14 @@
 import datetime
 from flask import Blueprint, flash, render_template, request, redirect,\
     url_for
-from DAAFi.db import get_db
-from DAAFi.queries import get_names, write_transaction
+from DAAFi.queries import name_in_table, add_name_to_table, get_names,\
+    write_transaction
 
-bp = Blueprint("add_data", __name__, url_prefix="/add_data")
+bp = Blueprint("add_data", __name__, url_prefix="/add_data",
+               template_folder="templates/add_data")
 
 
-def add_entry_name_base(table, formfield, template):
+def add_entry_name_base(table):
     """Template to add some data to the database.
 
     This function generates a generic template for adding data consiting only
@@ -23,48 +24,45 @@ def add_entry_name_base(table, formfield, template):
         template (str): The name of the html-template.
 
     Returns:
-        flask.render_template: Of the given template.
+        flask.render_template: Given template, for the first visti, of if the
+                               entry could not succesfully be added.
+        flask.redicrect(flask.url_for(Overview.index)): Redicrect to the index.
 
     """
-    # TODO: table should be cleaned for safety
     if request.method == "POST":
-        name = request.form[formfield]
-        db = get_db()
+        name = request.form["name"]
         error = None
 
         # check if an entry of the same name already exists
-        if db.execute("SELECT id from " + table + " WHERE name = ?",
-                      (name, )).fetchone() is not None:
+        if not name_in_table(name, table):
             error = "The name {} is already registered.".format(name)
 
         if error is None:
-            db.execute("INSERT INTO " + table + " (name) VALUES (?)",
-                       (name, ))
-            db.commit()
-            return redirect(url_for("Overview.index"))
-
+            add_successful = add_name_to_table(name, table)
+            if add_successful:
+                return redirect(url_for("Overview.index"))
+            else:
+                error = "Could not add the new entry."
         flash(error)
-    return render_template(template)
+    return render_template("add_name.html", table_name=table.capitalize())
 
 
 @bp.route("/associates", methods=("GET", "POST"))
 def add_associates():
     """Create interface to add the name of associates."""
-    return add_entry_name_base("associates", "associates_name",
-                               "add_associates.html")
+    return add_entry_name_base("associates")
 
 
 @bp.route("/method", methods=("GET", "POST"))
 def add_method():
     """Create interface to add the name of methods."""
-    return add_entry_name_base("method", "method_name", "add_method.html")
+    return add_entry_name_base("method")
 
 
 @bp.route("/category", methods=("GET", "POST"))
 def add_category():
     """Create interface to add the name of categories."""
-    return add_entry_name_base("category", "category_name",
-                               "add_category.html")
+    return add_entry_name_base("category")
 
 
 @bp.route("/transaction", methods=("GET", "POST"))
