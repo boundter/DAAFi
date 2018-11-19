@@ -1,17 +1,30 @@
+# -*- coding: utf-8 -*-
+"""A flask-app to organize and analyse financial dataself.
+
+This program keeps track of financial transactions to give a dynamic overview
+of the balance between income and expenditure. Additionally it offers detailed
+views for the analysis of these records.
+
+Methods:
+    flask init_db: Creates the database
+
+"""
 import os
 from flask import Flask
 
 
 def create_app(test_config=None):
-    """
-    Create a flask app with a default configuration.
+    """Create a flask app with a default configuration.
 
     This configuration will be overwritten by a config.py file and this should
     be done for proper security. The config files should be located in an
     instance folder in the app directory.
-    :param string test_config: The name of the config file for tests in the
-                                   instance folder
-    :returns: The flask app
+
+    Args:
+     test_config (str): The name of the config file for tests in the
+                        instance folder
+    Returns:
+        The flask app
     """
     # create the app and an instance folder in the app directory
     app = Flask(__name__, instance_relative_config=True)
