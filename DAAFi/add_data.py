@@ -24,9 +24,9 @@ def add_entry_name_base(table):
         template (str): The name of the html-template.
 
     Returns:
-        flask.render_template: Given template, for the first visti, of if the
+        flask.render_template: Given template, for the first vist, of if the
                                entry could not succesfully be added.
-        flask.redicrect(flask.url_for(Overview.index)): Redicrect to the index.
+        flask.redicrect(flask.url_for(Overview.index)): Redirect to the index.
 
     """
     if request.method == "POST":
@@ -67,7 +67,15 @@ def add_category():
 
 @bp.route("/transaction", methods=("GET", "POST"))
 def add_transaction():
-    """Create interface to add transaction entries."""
+    """Create interface to add transaction entries.
+
+    Returns:
+        flask.render_template: Given template, for the first vist, of if the
+                               entry could not succesfully be added.
+        flask.redicrect(flask.url_for(Overview.index)): Redirect to the
+                                                        index.
+
+    """
     associates = get_names("associates")
     category = get_names("category")
     method = get_names("method")
@@ -103,4 +111,5 @@ def add_transaction():
             return redirect(url_for("Overview.index"))
 
     return render_template("add_transaction.html", associates=associates,
-                           category=category, method=method, date=today)
+                           category=category, method=method,
+                           default_date=today)
