@@ -1,6 +1,20 @@
 # -*- coding: utf-8 -*-
 """This module contains test for the database connections."""
-from DAAFi.db import check_table_name
+import sqlite3
+import pytest
+from DAAFi.db import check_table_name, get_db
+
+
+def test_get_close_db(app):
+    """Test the opening and closing of the database."""
+    with app.app_context():
+        db = get_db()
+        assert db is get_db()
+
+    with pytest.raises(sqlite3.ProgrammingError) as e:
+        db.execute('SELECT 1')
+
+    assert 'closed' in str(e)
 
 
 def test_init_db_command(runner, monkeypatch):
@@ -20,6 +34,7 @@ def test_init_db_command(runner, monkeypatch):
 
 
 def test_check_table_name(app):
+    """Test if check_table_name finds all tables."""
     with app.app_context():
         true_names = ["contact", "payment_method", "category",
                       "money_transfer"]
