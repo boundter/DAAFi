@@ -5,7 +5,12 @@ import tempfile
 
 import pytest
 from DAAFi import create_app
-from DAAFi.db import init_db
+from DAAFi.db import init_db, get_db
+
+# read in SQL for populating test data
+with open(os.path.join(os.path.dirname(__file__), "example_data.sql"),
+          "rb") as f:
+    _data_sql = f.read().decode('utf8')
 
 
 @pytest.fixture
@@ -16,6 +21,12 @@ def app():
 
     with app.app_context():
         init_db()
+
+    # create the database and load test data
+    with app.app_context():
+        init_db()
+        get_db().executescript(_data_sql)
+
     yield app
 
     # cleanup temporary files
