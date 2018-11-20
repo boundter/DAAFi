@@ -16,7 +16,7 @@ def name_in_table(name, table):
         entry = db.execute("SELECT id FROM " + table + " WHERE name = ?",
                            (name, )).fetchone()
     else:
-        raise ValueError("The table of name {} does not exits").format(table)
+        raise ValueError("The table of name {} does not exits".format(table))
     return entry is None
 
 
@@ -44,7 +44,7 @@ def get_names(table):
         # TODO: Check if the table has name column
         names = db.execute("SELECT id, name FROM " + table).fetchall()
     else:
-        raise ValueError("The table of name {} does not exits").format(table)
+        raise ValueError("The table of name {} does not exits".format(table))
     return list_to_dict(names)
 
 
