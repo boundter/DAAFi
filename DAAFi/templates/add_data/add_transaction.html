@@ -6,9 +6,9 @@
 
 {% block content %}
   <form method="post">
-    <label for="associates">Associate</label>
-    <select name="associates" id="associates" required>
-      {% for id, name in associates.items() %}
+    <label for="contact">Sender/Receiver</label>
+    <select name="contact" id="contact" required>
+      {% for id, name in contact.items() %}
         <option value={{ id }}>{{ name }}</option>
       {% endfor %}
     </select>
@@ -18,9 +18,9 @@
       <option value={{ id }}>{{ name }}</option>
       {% endfor %}
     </select>
-    <label for="method">Method</label>
-    <select name="method" id="method" required>
-      {% for id, name in method.items() %}
+    <label for="payment_method">Payment Method</label>
+    <select name="payment_method" id="payment_method" required>
+      {% for id, name in payment_method.items() %}
       <option value={{ id }}>{{ name }}</option>
       {% endfor %}
     </select>

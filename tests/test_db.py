@@ -21,7 +21,8 @@ def test_init_db_command(runner, monkeypatch):
 
 def test_check_table_name(app):
     with app.app_context():
-        true_names = ["associates", "method", "category", "transfer"]
+        true_names = ["contact", "payment_method", "category",
+                      "money_transfer"]
         false_names = ["foo", "bar", "baz"]
         for name in true_names:
             assert check_table_name(name)

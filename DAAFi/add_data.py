@@ -44,19 +44,20 @@ def add_entry_name_base(table):
             else:
                 error = "Could not add the new entry."
         flash(error)
-    return render_template("add_name.html", table_name=table.capitalize())
+    return render_template("add_name.html",
+                           table_name=table.replace("_", " ").title())
 
 
-@bp.route("/associates", methods=("GET", "POST"))
-def add_associates():
-    """Create interface to add the name of associates."""
-    return add_entry_name_base("associates")
+@bp.route("/contact", methods=("GET", "POST"))
+def add_contact():
+    """Create interface to add the name of contacts."""
+    return add_entry_name_base("contact")
 
 
-@bp.route("/method", methods=("GET", "POST"))
-def add_method():
-    """Create interface to add the name of methods."""
-    return add_entry_name_base("method")
+@bp.route("/payment_method", methods=("GET", "POST"))
+def add_payment_method():
+    """Create interface to add the name of payment_methods."""
+    return add_entry_name_base("payment_method")
 
 
 @bp.route("/category", methods=("GET", "POST"))
@@ -76,15 +77,15 @@ def add_transaction():
                                                         index.
 
     """
-    associates = get_names("associates")
+    contact = get_names("contact")
     category = get_names("category")
-    method = get_names("method")
+    payment_method = get_names("payment_method")
     today = datetime.datetime.strftime(datetime.date.today(), "%d.%m.%Y")
     if request.method == "POST":
         # these should be correct, since the ids come directly from the db and
         # the values from dropdown
-        associate_id = request.form["associates"]
-        method_id = request.form["method"]
+        contact_id = request.form["contact"]
+        payment_method_id = request.form["payment_method"]
         category_id = request.form["category"]
 
         # make sure the amount is valid
@@ -106,10 +107,10 @@ def add_transaction():
             flash(error_date)
 
         if (error_amount is None and error_date is None):
-            write_transaction(date, amount, associate_id, method_id,
+            write_transaction(date, amount, contact_id, payment_method_id,
                               category_id)
             return redirect(url_for("Overview.index"))
 
-    return render_template("add_transaction.html", associates=associates,
-                           category=category, method=method,
+    return render_template("add_transaction.html", contact=contact,
+                           category=category, payment_method=payment_method,
                            default_date=today)

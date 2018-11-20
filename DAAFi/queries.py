@@ -13,7 +13,7 @@ def name_in_table(name, table):
     """
     db = get_db()
     if check_table_name(table):
-        entry = db.execute("SELETC id FROM " + table + " WHERE name = ?",
+        entry = db.execute("SELECT id FROM " + table + " WHERE name = ?",
                            (name, )).fetchone()
     else:
         raise ValueError("The table of name {} does not exits").format(table)
@@ -48,13 +48,14 @@ def get_names(table):
     return list_to_dict(names)
 
 
-def write_transaction(date, amount, associate_id, method_id, category_id):
-    """Write a new entry into the transfer table."""
+def write_transaction(date, amount, contact_id, payment_method_id,
+                      category_id):
+    """Write a new entry into the money_transfer table."""
     db = get_db()
     # date is saved as a timestamp from 01.01.1970
     date = int(date.timestamp())
-    db.execute("INSERT INTO transfer " +
-               "(date, amount, associates_id, method_id, category_id)" +
-               "VALUES (?, ?, ?, ?, ?)",
-               (date, amount, associate_id, method_id, category_id))
+    db.execute("INSERT INTO money_transfer " +
+               "(date, amount, contact_id, payment_method_id, category_id)"
+               + "VALUES (?, ?, ?, ?, ?)",
+               (date, amount, contact_id, payment_method_id, category_id))
     db.commit()
