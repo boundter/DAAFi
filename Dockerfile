@@ -13,8 +13,13 @@ RUN pip install -r requirements.txt
 # make the usual flask port available
 EXPOSE 5000
 
+# create a new daafi user with corresponding group
+RUN addgroup --system --gid 5555 daafi \
+    && adduser --system --no-create-home --uid 5555 --ingroup daafi daafi
+USER daafi
+
 # set the executable of the Flak app
-RUN cd /app
+WORKDIR /app
 ENV FLASK_APP DAAFi
 
 # add app directory to pythonpath for easier testing
