@@ -55,7 +55,7 @@ def write_transaction(date, amount, contact_id, payment_method_id,
     # date is saved as a timestamp from 01.01.1970
     date = int(date.timestamp())
     db.execute("INSERT INTO money_transfer " +
-               "(date, amount, contact_id, payment_method_id, category_id)"
-               + "VALUES (?, ?, ?, ?, ?)",
+               "(transaction_date, amount, contact_id, payment_method_id, " +
+               " category_id) VALUES (?, ?, ?, ?, ?)",
                (date, amount, contact_id, payment_method_id, category_id))
     db.commit()

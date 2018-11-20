@@ -20,7 +20,7 @@ CREATE TABLE category (
 
 CREATE TABLE money_transfer (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  date REAL NOT NULL,
+  transaction_date INTEGER NOT NULL,
   amount DECIMAL(10,2),
   contact_id INTEGER,
   payment_method_id INTEGER,
